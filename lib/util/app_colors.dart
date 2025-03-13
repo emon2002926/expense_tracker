@@ -6,4 +6,6 @@ class CustomColors{
   static const Color tertiary = Color(0xFFFF8D6C);
   static const Color outline = Colors.grey;
   static const Color bottomNavColor = Colors.white;
+
+  // static const Color textColorDark = Colors.grey[800];
 }

@@ -14,7 +14,7 @@ class MyAppView extends StatelessWidget {
           primary: CustomColors.primary,
           secondary: CustomColors.secondary,
           tertiary: CustomColors.tertiary,
-          outline: CustomColors.outline
+          outline: CustomColors.outline,
         )
       ),
       home: HomeScreen(),
