@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:expense_tracker/screens/home/views/main_screen.dart';
+import 'package:expense_tracker/screens/home/screen/main_screen.dart';
 import 'package:expense_tracker/screens/home/widget/bottom_navigation.dart';
 import 'package:expense_tracker/screens/stat_screen/stat_screen.dart';
 import 'package:expense_tracker/util/app_colors.dart';
