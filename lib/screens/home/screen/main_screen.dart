@@ -26,26 +26,7 @@ class MainScreen extends StatelessWidget {
             SizedBox(height: 20,),
             TotalBalanceWidget(),
             SizedBox(height: 40,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GeneralTextview(
-                  text: "Transactions",
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: GeneralTextview(
-                    text: "See all",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                )
-              ],
-            ),
+            transactionText(context),
             SizedBox(height: 20),
             ///Expense list
             TransactionData(transactionsData: transactionsList)
@@ -53,5 +34,29 @@ class MainScreen extends StatelessWidget {
         ),
       ),
     ));
+  }
+
+  Widget transactionText(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GeneralTextview(
+          text: "Transactions",
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.grey[800],
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: GeneralTextview(
+            text: "See all",
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.outline,
+          ),
+        )
+      ],
+    );
+
   }
 }
