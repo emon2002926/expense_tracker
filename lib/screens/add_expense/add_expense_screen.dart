@@ -16,7 +16,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   TextEditingController dateController=TextEditingController();
   DateTime selectedDate=DateTime.now();
 
-
+  List<String> categoryList=["entertainment","food","home","pet","shopping","tech","travel"];
   @override
   void initState() {
     // TODO: implement initState
@@ -45,12 +45,83 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 const SizedBox(height: 20,),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*.7,
-                  child: ExpenseField(iconData: FontAwesomeIcons.dollarSign,borderRadius: 30,hintText: "",controller: expenseController,),
+                  child: ExpenseField(prefixIcon: FontAwesomeIcons.dollarSign,borderRadius: 30,hintText: "",controller: expenseController,),
                 ),
                 const SizedBox(height: 32,),
-                ExpenseField(iconData: FontAwesomeIcons.list,hintText: "Category",controller: categoryController,),
+
+                // ExpenseField(prefixIcon: FontAwesomeIcons.list,
+                //   hintText: "Category",controller: categoryController,),
+
+                TextFormField(
+                  controller: categoryController,
+                  textAlign: TextAlign.center,
+                  readOnly: true,
+                  onTap: (){},
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(FontAwesomeIcons.list,size: 16,color: Colors.grey,),
+                    suffixIcon: IconButton(onPressed: (){
+                      showDialog(context: context, builder: (ctx){
+                        bool isExpanded=false;
+                        return StatefulBuilder(
+                            builder: (context,setState){
+                              return AlertDialog(
+                                backgroundColor: Colors.blue[50], // Set your desired color here
+
+                                title: const Text("Create a Category"),
+
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ExpenseField(borderRadius: 16,hintText: "Name",controller: categoryController),
+                                    SizedBox(height: 16,),
+                                    ExpenseField(borderRadius: 16,hintText: "Icon",controller: categoryController,readOnly: true,
+                                      suffixIcon: FontAwesomeIcons.chevronDown,suffixIconSize: 12,
+                                      onTap:() {setState(()=>isExpanded=!isExpanded);},),
+                                    isExpanded?Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(16)
+                                        ),
+
+                                      ),
+                                      child:ListView.builder(
+                                        itemCount: categoryList.length ,
+                                        itemBuilder: (context,int i){
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage("assets/${categoryList[i]}.png"))
+                                            ),
+                                          );
+                                        },
+                                      ) ,
+                                    ):Container(),
+                                    SizedBox(height: 16,),
+                                    ExpenseField(borderRadius: 16,hintText: "Color",controller: categoryController),
+                                  ],
+                                ),
+                              );
+
+                            }
+
+                        );
+                      });
+                    }, icon: Icon(FontAwesomeIcons.add,size: 16,color: Colors.grey,)),
+                    hintText: "Category",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderSide: BorderSide.none
+                    )
+                )
+
+                ),
                 const SizedBox(height: 32,),
-                ExpenseField(iconData: FontAwesomeIcons.clock,readOnly: true,
+                ExpenseField(prefixIcon: FontAwesomeIcons.clock,readOnly: true,
                   hintText: "Date",controller: dateController,
                   onTap:()async{
                     DateTime? newDate= await showDatePicker(context: context,
