@@ -1,6 +1,7 @@
 import 'package:expense_tracker/screens/add_expense/widget/expense_field.dart';
 import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 class AddExpenseScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   DateTime selectedDate=DateTime.now();
 
   List<String> categoryList=["entertainment","food","home","pet","shopping","tech","travel"];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -63,7 +65,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     prefixIcon: Icon(FontAwesomeIcons.list,size: 16,color: Colors.grey,),
                     suffixIcon: IconButton(onPressed: (){
                       showDialog(context: context, builder: (ctx){
+
+                        String iconSelected="";
+                        Color categoryColor = Colors.white;
                         bool isExpanded=false;
+
                         return StatefulBuilder(
                             builder: (context,setState){
                               return AlertDialog(
@@ -71,39 +77,103 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
                                 title: const Text("Create a Category"),
 
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ExpenseField(borderRadius: 16,hintText: "Name",controller: categoryController),
-                                    SizedBox(height: 16,),
-                                    ExpenseField(borderRadius: 16,hintText: "Icon",controller: categoryController,readOnly: true,
-                                      suffixIcon: FontAwesomeIcons.chevronDown,suffixIconSize: 12,
-                                      onTap:() {setState(()=>isExpanded=!isExpanded);},),
-                                    isExpanded?Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 200,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.vertical(
-                                            bottom: Radius.circular(16)
+                                content: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ExpenseField(borderRadius: 12,hintText: "Name",controller: categoryController),
+                                      SizedBox(height: 16,),
+                                      ExpenseField(borderRadius: 12,hintText: "Icon",controller: categoryController,readOnly: true,
+                                        suffixIcon: FontAwesomeIcons.chevronDown,suffixIconSize: 12,
+                                        onTap:() {setState(()=>isExpanded=!isExpanded);},),
+                                      isExpanded?Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 200,
+                                        decoration: BoxDecoration(
+
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.vertical(
+                                              bottom: Radius.circular(12)
+                                          ),
+
                                         ),
+                                        child:GridView.builder(
+                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                            mainAxisSpacing: 5,
+                                              crossAxisSpacing: 5,
+                                              crossAxisCount: 3),
+
+                                          itemCount: categoryList.length ,
+                                          itemBuilder: (context,int i){
+                                            return GestureDetector(
+                                              onTap: (){
+                                                setState(()=>iconSelected=categoryList[i]);
+                                              },
+                                              child: Container(
+                                                width: 50,
+                                                height: 50,
+                                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 3,
+                                                      color: iconSelected==categoryList[i]?Colors.green:Colors.grey
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  image: DecorationImage(
+                                                      image: AssetImage('assets/icons/${categoryList[i]}.png')
+                                                          ,fit: BoxFit.cover
+                                                  )
+                                                ),
+                                                // child: Image(width: 40,height: 40,
+                                                //     image: AssetImage('assets/icons/${categoryList[i]}.png')),
+                                              ),
+                                            );
+                                          },
+                                        ) ,
+                                      ):Container(),
+                                      SizedBox(height: 16,),
+                                      ExpenseField(borderRadius: 16,hintText: "Color",controller: categoryController,fillColor: categoryColor,
+                                          readOnly: true,
+                                        onTap: (){
+                                        showDialog(context: context, builder: (ctx2){
+                                          return AlertDialog(
+                                            content:Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ColorPicker(
+                                                  pickerColor: Colors.blue,
+                                                  onColorChanged: (color){
+                                                    setState((){
+                                                      categoryColor = color;
+                                                    });
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  width: double.infinity,
+                                                  height: 50,
+                                                  child:  TextButton(onPressed: (){
+                                                    Navigator.pop(ctx2);
+                                                  },style: TextButton.styleFrom(
+                                                      backgroundColor: Colors.black,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                                                      child: Text("Save",style: TextStyle(color: Colors.white),)),
+                                                )
+                                              ],
+                                            ) ,
+                                          );
+                                        });
+                                        },
 
                                       ),
-                                      child:ListView.builder(
-                                        itemCount: categoryList.length ,
-                                        itemBuilder: (context,int i){
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage("assets/${categoryList[i]}.png"))
-                                            ),
-                                          );
-                                        },
-                                      ) ,
-                                    ):Container(),
-                                    SizedBox(height: 16,),
-                                    ExpenseField(borderRadius: 16,hintText: "Color",controller: categoryController),
-                                  ],
+                                      SizedBox(height: 16,),
+
+                                      SizedBox(width: double.infinity,height: kToolbarHeight,
+                                          child: TextButton(onPressed: (){},style: TextButton.styleFrom(
+                                              backgroundColor: Colors.black,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                                              child: Text("Save",style: TextStyle(color: Colors.white),))
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
 
@@ -139,10 +209,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 const SizedBox(height: 32,),
 
                 SizedBox(width: double.infinity,height: kToolbarHeight,
-                    child: TextButton(onPressed: (){},style: TextButton.styleFrom(
+                    child: TextButton(onPressed: (){
+                      
+                    },style: TextButton.styleFrom(
                         backgroundColor: Colors.black,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                         child: Text("Save",style: TextStyle(color: Colors.white),))
-                )],
+                )
+              ],
             ),
           ),
         ),
