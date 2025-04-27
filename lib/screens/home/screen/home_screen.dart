@@ -1,13 +1,16 @@
 import 'dart:math';
 
+import 'package:expense_repositories/expense_repository.dart';
 import 'package:expense_tracker/screens/home/screen/main_screen.dart';
 import 'package:expense_tracker/screens/home/widget/bottom_navigation.dart';
 import 'package:expense_tracker/screens/home/widget/custom_floating_Act_Button.dart';
 import 'package:expense_tracker/screens/stat_screen/stat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../add_expense/add_expense_screen.dart';
+import '../../add_expense/bloc/create_categorybloc/create_category_bloc.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -31,7 +34,15 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigation(currentIndex: index, onTabSelected: onTabTapped),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: CustomFloatingActButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpenseScreen()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),
+              child: AddExpenseScreen(),
+            ),
+          ),
+        );
       },)
     );
   }
