@@ -1,7 +1,9 @@
+import 'package:expense_tracker/screens/add_expense/bloc/get_categorybloc/get_category_bloc.dart';
 import 'package:expense_tracker/screens/add_expense/widget/category_creation.dart';
 import 'package:expense_tracker/screens/add_expense/widget/expense_field.dart';
 import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 class AddExpenseScreen extends StatefulWidget {
@@ -49,8 +51,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   child: ExpenseField(prefixIcon: FontAwesomeIcons.dollarSign,borderRadius: 30,hintText: "",controller: expenseController,),
                 ),
                 const SizedBox(height: 32,),
-
-
                 // Todo Expense Category Field
                 TextFormField(
                   controller: categoryController,
@@ -68,12 +68,53 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     }, icon: Icon(FontAwesomeIcons.add,size: 16,color: Colors.grey,)),
                     hintText: "Category",
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                       borderSide: BorderSide.none
                     )
                 )
 
                 ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(12))
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BlocBuilder<GetCategoryBloc, GetCategoryState>(
+                    builder: (context, state) {
+                      //Todo it dose not show the data from database
+                      if(state is GetCategorySuccess){
+                        return ListView.builder(
+                            itemCount:state.categories.length,
+                            itemBuilder: (context,int i){
+
+                              return Card(
+                                child: ListTile(
+                                  title: Text(state.categories[i].name),
+                                  leading: Image.asset("assets/icons/${state.categories[i].icon}",scale: 20,),
+                                  tileColor: Colors.red,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                              );
+                            });
+                      }
+                      else if (state is GetCategoryLoading){
+                        return const Center(child: CircularProgressIndicator(),);
+                      }
+                      else if(state is GetCategoryFailure){
+                        return Text("Failed to get data form database try again later");
+                      }else{
+                        return Text("Check your internet connection");
+                      }
+
+                    },
+                  ),
+                                    ),
+                ),
+                //Todo date field
                 const SizedBox(height: 32,),
                 ExpenseField(prefixIcon: FontAwesomeIcons.clock,readOnly: true,
                   hintText: "Date",controller: dateController,
@@ -91,11 +132,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
                 ),
                 const SizedBox(height: 32,),
-
                 SizedBox(width: double.infinity,height: kToolbarHeight,
                     child: TextButton(onPressed: () {
-
-
                     },style: TextButton.styleFrom(
                         backgroundColor: Colors.black,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
                         child: Text("Save",style: TextStyle(color: Colors.white),))

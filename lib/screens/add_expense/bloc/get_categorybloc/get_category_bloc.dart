@@ -1,13 +1,22 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:expense_repositories/expense_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'get_category_event.dart';
 part 'get_category_state.dart';
 
 class GetCategoryBloc extends Bloc<GetCategoryEvent, GetCategoryState> {
-  GetCategoryBloc() : super(GetCategoryInitial()) {
-    on<GetCategoryEvent>((event, emit) {
-      // TODO: implement event handler
+
+  FirebaseExpenseRepo firebaseExpenseRepo;
+  GetCategoryBloc(this.firebaseExpenseRepo) : super(GetCategoryInitial()) {
+    on<GetCategoryEvent>((event, emit) async {
+      try{
+        List<Category> categories = await FirebaseExpenseRepo().getCategories();
+        emit(GetCategorySuccess(categories));
+      }catch(e){
+        emit (GetCategoryFailure());
+      }
     });
   }
 }

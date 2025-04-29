@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../add_expense/add_expense_screen.dart';
 import '../../add_expense/bloc/create_categorybloc/create_category_bloc.dart';
+import '../../add_expense/bloc/get_categorybloc/get_category_bloc.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -37,10 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),
+            builder: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),),
+                BlocProvider(
+                  create: (context) => GetCategoryBloc(FirebaseExpenseRepo())..add(GetCategories())
+                  ),
+              ],
               child: AddExpenseScreen(),
-            ),
+              ),
           ),
         );
       },)
