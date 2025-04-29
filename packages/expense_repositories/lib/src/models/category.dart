@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import '../entities/category_entity.dart';
 
 class Category {
@@ -5,7 +7,7 @@ class Category {
   String name;
   String totalExpense;
   String icon;
-  String color;
+  int color;
   Category({
     required this.categoryId,
     required this.name,
@@ -14,7 +16,7 @@ class Category {
     required this.color,
   });
 
-  static final empty = Category(categoryId: '', name: '', totalExpense: '', icon: '', color: '');
+  static final empty = Category(categoryId: '', name: '', totalExpense: '', icon: '', color: 0);
 
   CategoryEntity toEntity(){
     return CategoryEntity(

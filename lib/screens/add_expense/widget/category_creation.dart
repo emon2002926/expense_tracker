@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../bloc/create_categorybloc/create_category_bloc.dart';
 
 
-getCategoryCreation(BuildContext context) {
+Future getCategoryCreation(BuildContext context) {
 
   List<String> categoryList=["entertainment","food","home","pet","shopping","tech","travel"];
 
@@ -23,6 +23,8 @@ getCategoryCreation(BuildContext context) {
     TextEditingController categoryColorController=TextEditingController();
 
     bool isLoading=false;
+    Category category = Category.empty;
+
 
     return BlocProvider.value(
       value: context.read<CreateCategoryBloc>(),
@@ -32,7 +34,7 @@ getCategoryCreation(BuildContext context) {
           return BlocListener<CreateCategoryBloc, CreateCategoryState>(
             listener: (context, state) {
               if (state is CreateCategorySuccess) {
-                Navigator.pop(ctx);
+                Navigator.pop(ctx,category);
               } else if (state is CreateCategoryLoading) {
                 setState(() {
                   isLoading = true;
@@ -45,10 +47,7 @@ getCategoryCreation(BuildContext context) {
               title: const Text("Create a Category"),
 
               content: SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width * 0.9, // or 300, 350, etc.
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -166,14 +165,15 @@ getCategoryCreation(BuildContext context) {
                             : TextButton(
                             onPressed: () {
                               //todo save category button
-                              Category category = Category.empty;
-                              category.categoryId = Uuid().v1();
-                              category.name = categoryNameController.text;
-                              category.icon = iconSelected;
-                              category.color = categoryColor.toString();
-                              context.read<CreateCategoryBloc>().add(
-                                  CreateCategoryEvent(category));
-                              // Navigator.pop(context);
+                              setState(() {
+                                category.categoryId = Uuid().v1();
+                                category.name = categoryNameController.text;
+                                category.icon = iconSelected;
+                                // ignore: deprecated_member_use
+                                category.color = categoryColor.value;
+                              });
+
+                              context.read<CreateCategoryBloc>().add(CreateCategoryEvent(category));
 
                             },
                             style: TextButton.styleFrom(
