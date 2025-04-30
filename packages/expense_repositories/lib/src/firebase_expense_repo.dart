@@ -34,4 +34,21 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
       throw e;
     }
   }
+
+  @override
+  Future<void> createExpense(Expense expense) async{
+
+    try {
+      await expenseCollection.doc(expense.expenseId).set(expense.toEntity().toDocument());
+    }catch(e){
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Expense>> getExpenses() {
+    // TODO: implement getExpenses
+    throw UnimplementedError();
+  }
 }
