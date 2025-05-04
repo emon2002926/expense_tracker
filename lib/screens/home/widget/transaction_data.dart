@@ -1,16 +1,19 @@
+import 'package:expense_repositories/expense_repository.dart';
 import 'package:flutter/material.dart';
 import '../../../util/app_colors.dart';
 import 'genaral_textview.dart';
 
 class TransactionData extends StatelessWidget {
-  final List<Map<String, dynamic>> transactionsData;
-  const TransactionData({super.key, required this.transactionsData});
+  final List<Expense>? transactionsList;
+
+  const TransactionData({super.key, required this.transactionsList});
+
 
   @override
   Widget build(BuildContext context) {
     return Expanded( // Expand the ListView inside the Column
       child: ListView.builder(
-        itemCount: transactionsData.length,
+        itemCount: transactionsList!.length,
         itemBuilder: (context, int i) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 16),
@@ -31,17 +34,15 @@ class TransactionData extends StatelessWidget {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: transactionsData[i]["color"],
+                            color: Color(transactionsList![i].category.color),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            transactionsData[i]["icon"],
-                            color: Colors.white,
-                          ),
+                          child:  Image.asset(
+                            "assets/icons/${transactionsList?[i].category.icon}.png", scale: 20,),
                         ),
                         SizedBox(width: 20),
                         GeneralTextview(
-                          text: transactionsData[i]["name"],
+                          text: transactionsList![i].category.name,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[800],
@@ -51,12 +52,12 @@ class TransactionData extends StatelessWidget {
                     Column(
                       children: [
                         GeneralTextview(
-                          text: transactionsData[i]["totalAmount"],
+                          text: transactionsList![i].amount.toString(),
                           fontSize: 16,
                           color: Colors.grey[800],
                         ),
                         GeneralTextview(
-                          text: "Today",
+                          text: transactionsList![i].dateTime.toString(),
                           fontSize: 16,
                           color: CustomColors.outline,
                         )

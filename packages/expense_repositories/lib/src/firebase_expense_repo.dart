@@ -16,7 +16,7 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
           .set(category.toEntity().toDocument());
     }catch(e){
       log(e.toString());
-      throw e;
+      rethrow;
     }
   }
 
@@ -31,7 +31,7 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
           
     }catch(e){
       log(e.toString());
-      throw e;
+      rethrow;
     }
   }
 
@@ -47,8 +47,19 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   }
 
   @override
-  Future<List<Expense>> getExpenses() {
-    // TODO: implement getExpenses
-    throw UnimplementedError();
+  Future<List<Expense>> getExpenses() async {
+    try {
+      return await expenseCollection
+          .get()
+          .then((value) => value.docs.map((e)=>
+          Expense.fromEntity(ExpenseEntity.fromDocument(e.data())))
+          .toList());
+
+    }catch(e){
+      log(e.toString());
+      rethrow;
+    }
+
   }
+
 }

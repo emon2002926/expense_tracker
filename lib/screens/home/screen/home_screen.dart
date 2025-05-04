@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
 import 'package:expense_tracker/screens/home/screen/main_screen.dart';
 import 'package:expense_tracker/screens/home/widget/bottom_navigation.dart';
 import 'package:expense_tracker/screens/home/widget/custom_floating_Act_Button.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+  late List<Expense> expensesList;
 
   void onTabTapped(int newIndex) {
     setState(() {
@@ -30,30 +32,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: index == 0 ? const MainScreen() : const StatScreen(),
-      bottomNavigationBar: BottomNavigation(currentIndex: index, onTabSelected: onTabTapped),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CustomFloatingActButton(onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),),
-                BlocProvider(
-                  create: (context) => GetCategoryBloc(FirebaseExpenseRepo())..add(GetCategories())
+
+      return Scaffold(
+          body: index == 0 ? BlocProvider(
+            create: (context) => GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
+            child: MainScreen(),
+              ) : const StatScreen(),
+              bottomNavigationBar: BottomNavigation(currentIndex: index, onTabSelected: onTabTapped),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: CustomFloatingActButton(onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),),
+                        BlocProvider(
+                          create: (context) => GetCategoryBloc(FirebaseExpenseRepo())..add(GetCategories())
+                          ),
+                        BlocProvider(
+                            create: (context)=> CreateExpenseBloc(FirebaseExpenseRepo())
+                        )
+                      ],
+                      child: AddExpenseScreen(),
+                      ),
                   ),
-                BlocProvider(
-                    create: (context)=> CreateExpenseBloc(FirebaseExpenseRepo())
-                )
-              ],
-              child: AddExpenseScreen(),
-              ),
-          ),
-        );
-      },)
-    );
+                );
+              },)
+      );
+
   }
 }
