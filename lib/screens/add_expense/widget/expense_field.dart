@@ -10,8 +10,9 @@ class ExpenseField extends StatelessWidget {
   final double? suffixIconSize ;
   final TextEditingController? controller ;
   final Color? fillColor ;
+  final TextInputType? textInputType ;
   const ExpenseField({super.key,  this.prefixIcon,  this.borderRadius
-    , required this.hintText, this.onTap,  this.readOnly=false, this.controller,this.suffixIcon,this.suffixIconSize=16, this.fillColor=Colors.white});
+    , required this.hintText, this.onTap,  this.readOnly=false, this.controller,this.suffixIcon,this.suffixIconSize=16, this.fillColor=Colors.white, this.textInputType});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class ExpenseField extends StatelessWidget {
       onTap: () => onTap!(),
         readOnly: readOnly,
         controller: controller,
+        keyboardType: textInputType,
         decoration: InputDecoration(
           fillColor:fillColor,
           filled: true,
@@ -32,6 +34,7 @@ class ExpenseField extends StatelessWidget {
           ),
           hintText: hintText,
           hintStyle: const TextStyle(fontSize: 16,color: Colors.grey),
+
 
         ),
 

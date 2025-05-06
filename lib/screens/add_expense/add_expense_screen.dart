@@ -76,6 +76,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         borderRadius: 30,
                         hintText: "",
                         controller: expenseController,
+                        textInputType:TextInputType.number,
                       ),
                     ),
                     const SizedBox(height: 32),
