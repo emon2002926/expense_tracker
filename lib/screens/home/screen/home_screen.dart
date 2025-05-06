@@ -22,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
-  late List<Expense> expensesList;
 
   void onTabTapped(int newIndex) {
     setState(() {
@@ -33,34 +32,37 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-      return Scaffold(
-          body: index == 0 ? BlocProvider(
-            create: (context) => GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
-            child: MainScreen(),
-              ) : const StatScreen(),
-              bottomNavigationBar: BottomNavigation(currentIndex: index, onTabSelected: onTabTapped),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: CustomFloatingActButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                          create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),),
-                        BlocProvider(
-                          create: (context) => GetCategoryBloc(FirebaseExpenseRepo())..add(GetCategories())
-                          ),
-                        BlocProvider(
-                            create: (context)=> CreateExpenseBloc(FirebaseExpenseRepo())
-                        )
-                      ],
-                      child: AddExpenseScreen(),
-                      ),
+    return Scaffold(
+        body: index == 0 ?  MainScreen() : const StatScreen(),
+        bottomNavigationBar: BottomNavigation(currentIndex: index, onTabSelected: onTabTapped),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: CustomFloatingActButton(onPressed: (){
+          Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),),
+                  BlocProvider(
+                      create: (context) => GetCategoryBloc(FirebaseExpenseRepo())..add(GetCategories())
                   ),
-                );
-              },)
-      );
+                  BlocProvider(
+                      create: (context)=> CreateExpenseBloc(FirebaseExpenseRepo())
+                  )
+                ],
+                child: AddExpenseScreen(),
+              ),
+            ),
+          ).then((added ){
+            if(added==true && context.mounted){
+              BlocProvider.of<GetExpenseBloc>(context).add(GetExpense());
+            }
+          });
+        },)
+    );
+
+
 
   }
 }

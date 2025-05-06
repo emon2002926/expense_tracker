@@ -1,5 +1,6 @@
 import 'package:expense_repositories/expense_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../util/app_colors.dart';
 import 'genaral_textview.dart';
 
@@ -38,7 +39,7 @@ class TransactionData extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child:  Image.asset(
-                            "assets/icons/${transactionsList?[i].category.icon}.png", scale: 20,),
+                            "assets/icons/${transactionsList?[i].category.icon}.png", scale: 20,color: Colors.white,),
                         ),
                         SizedBox(width: 20),
                         GeneralTextview(
@@ -52,12 +53,12 @@ class TransactionData extends StatelessWidget {
                     Column(
                       children: [
                         GeneralTextview(
-                          text: transactionsList![i].amount.toString(),
+                          text: "\$${transactionsList![i].amount.toString()}",
                           fontSize: 16,
                           color: Colors.grey[800],
                         ),
                         GeneralTextview(
-                          text: transactionsList![i].dateTime.toString(),
+                          text: DateFormat("dd/MM/yyyy").format(transactionsList![i].dateTime),
                           fontSize: 16,
                           color: CustomColors.outline,
                         )
