@@ -24,6 +24,8 @@ dependencies:
   flutter_bloc: ^9.1.0
   bloc: ^9.0.0
   uuid: ^4.5.1
+  firebase_auth: ^5.5.2
+
 
 
 

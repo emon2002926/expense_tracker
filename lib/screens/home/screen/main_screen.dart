@@ -1,8 +1,5 @@
-import 'package:expense_repositories/expense_repository.dart';
-import 'package:expense_tracker/data/data.dart';
+
 import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
-import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
-import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
 import 'package:expense_tracker/screens/home/widget/welcome_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

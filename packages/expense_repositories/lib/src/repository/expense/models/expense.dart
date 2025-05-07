@@ -1,4 +1,4 @@
-import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart';
 
 class Expense {
   String expenseId;

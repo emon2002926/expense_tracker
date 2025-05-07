@@ -1,4 +1,4 @@
-import '../expense_repository.dart';
+import 'expense_repository.dart';
 
 abstract class ExpenseRepositories {
 

@@ -1,4 +1,4 @@
-import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart';
 import 'package:expense_tracker/screens/add_expense/bloc/get_categorybloc/get_category_bloc.dart';
 import 'package:expense_tracker/screens/add_expense/widget/category_creation.dart';
 import 'package:expense_tracker/screens/add_expense/widget/expense_field.dart';

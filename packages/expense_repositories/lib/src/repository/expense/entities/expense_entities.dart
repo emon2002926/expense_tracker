@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../expense_repository.dart';
+import '../expense_repository.dart';
 
 class ExpenseEntity {
   String expenseId;

@@ -1,4 +1,4 @@
-import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart' ;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../util/app_colors.dart';

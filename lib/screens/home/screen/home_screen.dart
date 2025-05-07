@@ -1,6 +1,5 @@
-import 'dart:math';
 
-import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart' ;
 import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
 import 'package:expense_tracker/screens/home/screen/main_screen.dart';
 import 'package:expense_tracker/screens/home/widget/bottom_navigation.dart';

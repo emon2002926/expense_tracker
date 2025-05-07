@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:expense_repositories/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart' ;
 import 'package:expense_tracker/screens/add_expense/widget/expense_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expense_repositories/expense_repository.dart';
-import 'package:expense_repositories/src/expense_repo.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repository.dart';
+import 'package:expense_repositories/src/repository/expense/expense_repo.dart';
 
 class FirebaseExpenseRepo implements ExpenseRepositories {
   final expenseCollection = FirebaseFirestore.instance.collection('expenses');
