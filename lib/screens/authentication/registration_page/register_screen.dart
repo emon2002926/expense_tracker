@@ -1,5 +1,4 @@
 import 'package:expense_tracker/screens/authentication/login_page/login_screen.dart';
-import 'package:expense_tracker/screens/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
@@ -7,6 +6,7 @@ import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import 'package:expense_repositories/src/repository/auth/auth_repository.dart' ;
 
 class RegisterScreen extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -17,15 +17,20 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dataSource = FirebaseAuthDataSource();
+    final authRepository = AuthRepositoryImpl(dataSource: dataSource);
+    final signInUseCase = SignInUseCase(authRepository);
+    final signUpUseCase = SignUpUseCase(authRepository);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) =>  LoginScreen()),
-            );
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => BlocProvider(
+                  create: (context) =>AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase)
+                  ,child: LoginScreen(),)));
+
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -111,9 +116,11 @@ class RegisterScreen extends StatelessWidget {
                         onPressed: state is AuthLoading
                             ? null
                             : () {
+                          final name = nameController.text.trim();
                           final email = emailController.text.trim();
                           final password = passwordController.text.trim();
-                          context.read<AuthBloc>().add(SignUpRequested(email, password));
+                          context.read<AuthBloc>().add(
+                              SignUpRequested(email, password, name));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -122,8 +129,10 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ),
                         child: state is AuthLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text("Register", style: TextStyle(color: Colors.white)),
+                            ? const CircularProgressIndicator(color: Colors
+                            .white)
+                            : const Text("Register",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
 

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import '../entities/category_entity.dart';
 
