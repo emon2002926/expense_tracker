@@ -32,6 +32,7 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
 
           if (state is AuthSuccess) {
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) =>

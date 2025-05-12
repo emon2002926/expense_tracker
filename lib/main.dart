@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:expense_tracker/screens/authentication/bloc/auth_bloc.dart';
+import 'package:expense_tracker/screens/authentication/bloc/auth_event.dart';
 import 'package:expense_tracker/screens/authentication/login_page/login_screen.dart';
 import 'package:expense_tracker/screens/authentication/registration_page/register_screen.dart';
 import 'package:expense_tracker/simple_bloc_observer.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
             )
         ),
         home: BlocProvider(
-          create: (context) => AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase),
+          create: (context) => 
+              AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase)..add(AppStarted()),
           child: LoginScreen(),
         )
     );
