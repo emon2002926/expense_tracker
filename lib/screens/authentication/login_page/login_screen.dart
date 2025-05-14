@@ -27,12 +27,13 @@ class LoginScreen extends StatelessWidget {
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
     return Scaffold(
+
       backgroundColor: Colors.grey[100],
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
 
           if (state is AuthSuccess) {
-
+            print("Uuidhs  :"+state.uid);
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) =>

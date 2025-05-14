@@ -8,6 +8,7 @@ import 'package:expense_tracker/simple_bloc_observer.dart';
 import 'package:expense_tracker/util/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expense_repositories/src/repository/auth/auth_repository.dart';
 
@@ -16,6 +17,13 @@ void main() async {
   await Firebase.initializeApp();
   Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white, // Change this to any color
+      systemNavigationBarIconBrightness: Brightness.light, // Icon color
+    ),
+  );
+
 }
 
 class MyApp extends StatelessWidget {

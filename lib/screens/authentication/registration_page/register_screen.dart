@@ -38,120 +38,129 @@ class RegisterScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GeneralTextview(
-                      text: "Create Account",
-                      color: Colors.grey[800],
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const SizedBox(height: 10),
-                    GeneralTextview(
-                      text: "Start tracking your expenses today",
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                    const SizedBox(height: 40),
-
-                    // Name
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        hintText: "Full Name",
-                        prefixIcon: const Icon(Icons.person_outline, size: 20),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
+          return Scaffold(
+            backgroundColor: Colors.grey[100],
+            appBar: AppBar(
+              backgroundColor: Colors.grey[100],
+              elevation: 0,
+              centerTitle: true,
+              title: Text("Register", style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),),
+            ),
+            body: Center(
+              child: Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 24.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GeneralTextview(
+                        text: "Create Account",
+                        color: Colors.grey[800],
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Email
-                    TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        hintText: "Email",
-                        prefixIcon: const Icon(Icons.email_outlined, size: 20),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
+                      const SizedBox(height: 10),
+                      GeneralTextview(
+                        text: "Start tracking your expenses today",
+                        color: Colors.grey[600],
+                        fontSize: 14,
                       ),
-                    ),
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 40),
 
-                    // Password
-                    TextField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        prefixIcon: const Icon(Icons.lock_outline, size: 20),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Register Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                          final name = nameController.text.trim();
-                          final email = emailController.text.trim();
-                          final password = passwordController.text.trim();
-                          context.read<AuthBloc>().add(
-                              SignUpRequested(email, password, name));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
+                      // Name
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          hintText: "Full Name",
+                          prefixIcon: const Icon(Icons.person_outline, size: 20),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
                           ),
                         ),
-                        child: state is AuthLoading
-                            ? const CircularProgressIndicator(color: Colors
-                            .white)
-                            : const Text("Register",
-                            style: TextStyle(color: Colors.white)),
                       ),
-                    ),
+                      const SizedBox(height: 16),
 
-                    const SizedBox(height: 24),
+                      // Email
+                      TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          prefixIcon: const Icon(Icons.email_outlined, size: 20),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
 
-                    // Link to login
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Already have an account?"),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Goes back to LoginScreen
+                      // Password
+                      TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          prefixIcon: const Icon(Icons.lock_outline, size: 20),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Register Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                            final name = nameController.text.trim();
+                            final email = emailController.text.trim();
+                            final password = passwordController.text.trim();
+                            context.read<AuthBloc>().add(
+                                SignUpRequested(email, password, name));
                           },
-                          child: const Text("Login"),
-                        )
-                      ],
-                    ),
-                  ],
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: state is AuthLoading
+                              ? const CircularProgressIndicator(color: Colors
+                              .white)
+                              : const Text("Register",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Link to login
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Already have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Goes back to LoginScreen
+                            },
+                            child: const Text("Login"),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

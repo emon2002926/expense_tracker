@@ -1,3 +1,4 @@
+// import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:expense_tracker/screens/authentication/login_page/login_screen.d
 import 'package:expense_tracker/screens/home/screen/home_screen.dart';
 import 'package:expense_repositories/src/repository/expense/expense_repository.dart';
 import 'package:expense_repositories/src/repository/auth/auth_repository.dart';
+import 'package:expense_repositories/src/repository/user_profile/user_profile_repository.dart';
+
 import 'package:lottie/lottie.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -38,14 +41,24 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       listener: (context, state) {
         if (state is AuthSuccess) {
           // If user is authenticated, navigate to Home Screen
+          print("Uuidhs  :"+state.uid);
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) =>
-                GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
-                child: const HomeScreen(),
-              ),
+              builder: (_) => MultiBlocProvider(providers: [
+                BlocProvider(
+                  create: (_) =>
+                  GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
+                  // child: const HomeScreen(),
+                ),
+                // BlocProvider(
+                //     create: (_) =>
+                //     UserBloc(getUserProfileUseCase: getUserProfileUseCase)..add(LoadUserProfile(state.uid))
+                // )
+                ],
+                  child: HomeScreen()),
+
             ),
           );
         } else if (state is AuthFailure || state is AuthInitial) {

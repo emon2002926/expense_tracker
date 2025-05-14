@@ -21,10 +21,10 @@ class FirebaseAuthDataSource {
         password: password,
       );
 
-      final uid = result.user!.uid;
+      // final uid = result.user!.uid;
 
       // Save extra data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      await FirebaseFirestore.instance.collection('users').doc(email).set({
         'email': email,
         'username': username,
         'createdAt': FieldValue.serverTimestamp(),
