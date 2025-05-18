@@ -7,11 +7,23 @@ class FirebaseAuthDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<UserModel?> signIn(String email, String password) async {
-    final result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
-    final uid = result.user!.uid;
-    final userDoc = await FirebaseFirestore.instance.collection("users").doc(uid).get();
-    return UserModel.fromFirestore(userDoc);
+    try{
+      final result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+      final uid = result.user!.uid;
+      final userDoc = await FirebaseFirestore.instance.collection("users").doc(email).get();
+      if(userDoc.exists){
+        return UserModel.fromFirestore(userDoc);
+      }else{
+        return null;
+      }
+
+    }catch(e){
+      print('SignIn error: $e');
+      return null;
+    }
+
   }
 
   Future<UserModel?> signUp(String email, String password, String username) async {

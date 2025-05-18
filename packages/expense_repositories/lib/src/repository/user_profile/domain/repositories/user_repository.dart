@@ -1,6 +1,6 @@
-import 'package:expense_repositories/src/repository/user_profile/data/user.dart';
+import 'package:expense_repositories/src/repository/user_profile/data/user_profile.dart';
 
 abstract class UserRepository {
-  Future<User> getUser(String email);
+  Future<UserProfile> getUser(String email);
 
 }

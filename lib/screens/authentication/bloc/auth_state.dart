@@ -6,8 +6,8 @@ class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
   final String uid;
-
-  AuthSuccess(this.uid);
+  final String? email;
+  AuthSuccess( this.uid,this.email);
 }
 
 class AuthFailure extends AuthState {

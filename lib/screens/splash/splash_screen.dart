@@ -1,4 +1,5 @@
 // import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
+import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
@@ -25,7 +26,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   void initState() {
     super.initState();
     // Trigger the AppStarted event after 10 seconds delay
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       context.read<AuthBloc>().add(AppStarted());
     });
   }
@@ -41,7 +42,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       listener: (context, state) {
         if (state is AuthSuccess) {
           // If user is authenticated, navigate to Home Screen
-          print("Uuidhs  :"+state.uid);
+          print("Uuidhs  :"+state.email!);
 
           Navigator.pushReplacement(
             context,
@@ -50,13 +51,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 BlocProvider(
                   create: (_) =>
                   GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
-                  // child: const HomeScreen(),
                 ),
-                // BlocProvider(
-                //     create: (_) =>
-                //     UserBloc(getUserProfileUseCase: getUserProfileUseCase)..add(LoadUserProfile(state.uid))
-                // )
-                ],
+                BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.email!)))
+
+              ],
                   child: HomeScreen()),
 
             ),

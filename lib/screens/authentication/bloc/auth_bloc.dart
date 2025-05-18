@@ -13,8 +13,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AppStarted>((event,emit){
       final user = _firebaseAuth.currentUser;
+
       if(user !=null){
-        emit(AuthSuccess(user.uid));
+        emit(AuthSuccess(user.uid,user.email));
       }else{emit(AuthInitial());}
     });
 
@@ -23,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final user = await signInUseCase(event.email, event.password);
-        emit(AuthSuccess(user!.uid));
+        emit(AuthSuccess(user!.uid,user.email));
       } catch (e) {
         emit(AuthFailure(e.toString()));
       }
@@ -33,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final user = await signUpUseCase(event.email, event.password,event.username);
-        emit(AuthSuccess(user!.uid));
+        emit(AuthSuccess(user!.uid,user.email));
       } catch (e) {
         emit(AuthFailure(e.toString()));
       }

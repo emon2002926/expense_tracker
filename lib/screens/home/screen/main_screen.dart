@@ -1,4 +1,5 @@
 import 'package:expense_tracker/screens/home/bloc/get_expense_bloc/get_expense_bloc.dart';
+import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
 import 'package:expense_tracker/screens/home/widget/welcome_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,16 @@ class MainScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: Column(
               children: [
-                WelcomeTab(name: "FFF",),
+                BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    if(state is UserLoaded){
+                      return WelcomeTab(name: state.user.username,);
+                    }else{
+                      return WelcomeTab(name: "FFF",);
+
+                    }
+                  },
+                ),
                 SizedBox(height: 20,),
                 TotalBalanceWidget(),
                 SizedBox(height: 40,),
