@@ -3,7 +3,9 @@ part of 'create_expense_bloc.dart';
  class CreateExpenseEvent extends Equatable {
 
   final Expense expense;
-  const CreateExpenseEvent(this.expense);
+  final String email;
+
+  const CreateExpenseEvent(this.expense,this.email);
 
   @override
   List<Object> get props => [expense];

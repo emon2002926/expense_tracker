@@ -12,7 +12,8 @@ import 'package:uuid/uuid.dart';
 import 'bloc/create_expensebloc/create_expense_bloc.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({super.key});
+  final String email;
+  const AddExpenseScreen({super.key, required this.email});
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -32,6 +33,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     dateController.text = DateFormat('EEE, d/ M/ y').format(DateTime.now());
     expense = Expense.empty;
     expense.expenseId = const Uuid().v1();
+    print("email:${widget.email}");
   }
 
   @override
@@ -209,7 +211,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           });
                           context
                               .read<CreateExpenseBloc>()
-                              .add(CreateExpenseEvent(expense));
+                              .add(CreateExpenseEvent(expense,widget.email));
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.black,

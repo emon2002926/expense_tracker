@@ -1,11 +1,12 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_repositories/src/repository/expense/expense_repository.dart';
 import 'package:expense_repositories/src/repository/expense/expense_repo.dart';
 
 class FirebaseExpenseRepo implements ExpenseRepositories {
+
   final expenseCollection = FirebaseFirestore.instance.collection('expenses');
+  final newExpenseCollection = FirebaseFirestore.instance.collection('users');
   final categoryCollection = FirebaseFirestore.instance.collection('categories');
 
   @override
@@ -36,8 +37,7 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   }
 
   @override
-  Future<void> createExpense(Expense expense) async{
-
+  Future<void> createExpense(Expense expense,String email) async{
     try {
       await expenseCollection.doc(expense.expenseId).set(expense.toEntity().toDocument());
     }catch(e){

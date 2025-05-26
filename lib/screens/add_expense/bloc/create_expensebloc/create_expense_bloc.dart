@@ -12,7 +12,7 @@ class CreateExpenseBloc extends Bloc<CreateExpenseEvent, CreateExpenseState> {
     on<CreateExpenseEvent>((event, emit) async{
       emit(CreateExpenseLoading());
       try{
-        await firebaseExpenseRepo.createExpense(event.expense);
+        await firebaseExpenseRepo.createExpense(event.expense,event.email);
         emit(CreateExpenseSuccess());
       }catch(e){
         emit(CreateExpenseFailure());
