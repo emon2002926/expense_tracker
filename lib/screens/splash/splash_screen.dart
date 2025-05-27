@@ -50,12 +50,12 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               builder: (_) => MultiBlocProvider(providers: [
                 BlocProvider(
                   create: (_) =>
-                  GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
+                  GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense(state.uid)),
                 ),
-                BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.email!)))
+                BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.uid)))
 
               ],
-                  child: HomeScreen()),
+                  child: HomeScreen(uid: state.uid,)),
 
             ),
           );

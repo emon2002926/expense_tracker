@@ -12,7 +12,7 @@ class FirebaseAuthDataSource {
       final result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
       final uid = result.user!.uid;
-      final userDoc = await FirebaseFirestore.instance.collection("users").doc(email).get();
+      final userDoc = await FirebaseFirestore.instance.collection("users").doc(uid).get();
       if(userDoc.exists){
         return UserModel.fromFirestore(userDoc);
       }else{
@@ -33,10 +33,11 @@ class FirebaseAuthDataSource {
         password: password,
       );
 
-      // final uid = result.user!.uid;
+      final uid = result.user!.uid;
 
       // Save extra data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(email).set({
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'uid': uid,
         'email': email,
         'username': username,
         'createdAt': FieldValue.serverTimestamp(),

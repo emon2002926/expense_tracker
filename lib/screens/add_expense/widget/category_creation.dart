@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../bloc/create_categorybloc/create_category_bloc.dart';
 
 
-Future getCategoryCreation(BuildContext context) {
+Future getCategoryCreation(BuildContext context,String uid) {
 
   List<String> categoryList=["entertainment","food","home","pet","shopping","tech","travel"];
 
@@ -173,7 +173,7 @@ Future getCategoryCreation(BuildContext context) {
                                 category.color = categoryColor.value;
                               });
 
-                              context.read<CreateCategoryBloc>().add(CreateCategoryEvent(category));
+                              context.read<CreateCategoryBloc>().add(CreateCategoryEvent(category,uid));
 
                             },
                             style: TextButton.styleFrom(

@@ -12,7 +12,7 @@ class GetCategoryBloc extends Bloc<GetCategoryEvent, GetCategoryState> {
   GetCategoryBloc(this.firebaseExpenseRepo) : super(GetCategoryInitial()) {
     on<GetCategoryEvent>((event, emit) async {
       try{
-        List<Category> categories = await firebaseExpenseRepo.getCategories();
+        List<Category> categories = await firebaseExpenseRepo.getCategories(event.uid);
         emit(GetCategorySuccess(categories));
       }catch(e){
         emit (GetCategoryFailure());

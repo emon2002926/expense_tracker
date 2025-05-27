@@ -13,7 +13,7 @@ class GetExpenseBloc extends Bloc<GetExpenseEvent, GetExpenseState> {
     on<GetExpenseEvent>((event, emit) async {
       emit(GetExpenseLoading());
       try{
-        List<Expense> expenses = await _expenseRepositories.getExpenses();
+        List<Expense> expenses = await _expenseRepositories.getExpenses(event.uid);
         emit(GetExpenseSuccess(expenses: expenses));
 
       }catch(e){

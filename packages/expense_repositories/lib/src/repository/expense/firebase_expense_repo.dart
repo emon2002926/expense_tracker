@@ -10,9 +10,12 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   final categoryCollection = FirebaseFirestore.instance.collection('categories');
 
   @override
-  Future<void> createCategory(Category category) async {
+  Future<void> createCategory(Category category,String uid) async {
     try {
-      await categoryCollection
+
+      final newCategoryCollection = FirebaseFirestore.instance.collection("users").doc(uid)
+          .collection('categories');
+      await newCategoryCollection
           .doc(category.categoryId)
           .set(category.toEntity().toDocument());
     }catch(e){
@@ -22,9 +25,11 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   }
 
   @override
-  Future<List<Category>> getCategories() async {
+  Future<List<Category>> getCategories(String uid) async {
     try {
-      return await categoryCollection
+      final newCategoryCollection = FirebaseFirestore.instance.collection("users").doc(uid)
+          .collection('categories');
+      return await newCategoryCollection
           .get()
           .then((value) => value.docs.map((e)=>
           Category.fromEntity(CategoryEntity.fromDocument(e.data())))
@@ -37,9 +42,13 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   }
 
   @override
-  Future<void> createExpense(Expense expense,String email) async{
+  Future<void> createExpense(Expense expense,String uid) async{
     try {
-      await expenseCollection.doc(expense.expenseId).set(expense.toEntity().toDocument());
+      final newExpenseCollection = FirebaseFirestore.instance.collection('users').doc(uid)
+          .collection('expenses');
+
+      return await newExpenseCollection.doc(expense.expenseId).set(expense.toEntity().toDocument());
+      // await expenseCollection.doc(expense.expenseId).set(expense.toEntity().toDocument());
     }catch(e){
       log(e.toString());
       rethrow;
@@ -47,9 +56,11 @@ class FirebaseExpenseRepo implements ExpenseRepositories {
   }
 
   @override
-  Future<List<Expense>> getExpenses() async {
+  Future<List<Expense>> getExpenses(String uid) async {
     try {
-      return await expenseCollection
+      final newExpenseCollection = FirebaseFirestore.instance.collection('users').doc(uid)
+          .collection('expenses');
+      return await newExpenseCollection
           .get()
           .then((value) => value.docs.map((e)=>
           Expense.fromEntity(ExpenseEntity.fromDocument(e.data())))

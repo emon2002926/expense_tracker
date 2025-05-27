@@ -5,12 +5,11 @@ import 'package:expense_repositories/src/repository/user_profile/domain/reposito
 class UserRepositoryImpl  implements UserRepository {
   final  firebaseFirestore = FirebaseFirestore.instance.collection("users");
   @override
-  Future<UserProfile> getUser(String email) async {
+  Future<UserProfile> getUser(String uid) async {
 
-    final doc = await firebaseFirestore.doc(email).get();
+    final doc = await firebaseFirestore.doc(uid).get();
     final userDoc = doc.data() as Map<String,dynamic>;
     
     return  UserProfile.fromMap(userDoc);
-
   }
 }

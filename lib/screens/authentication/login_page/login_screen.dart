@@ -8,11 +8,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expense_tracker/screens/home/widget/genaral_textview.dart';
 
 import '../../home/bloc/get_expense_bloc/get_expense_bloc.dart';
+import '../../home/bloc/user_profile/user_bloc.dart';
 import '../../home/screen/home_screen.dart';
 import '../bloc/auth_event.dart';
 import '../registration_page/register_screen.dart';
 import 'package:expense_repositories/src/repository/auth/auth_repository.dart' ;
-import '';
+import 'package:expense_repositories/src/repository/user_profile/user_profile_repository.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -37,10 +38,14 @@ class LoginScreen extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) =>
-                  BlocProvider(
-                    create: (context) => GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense()),
-                    child: HomeScreen(),
-                  )
+                  MultiBlocProvider(providers: [
+                    BlocProvider(
+                      create: (_) =>
+                      GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense(state.uid)),
+                    ),
+                    BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.uid)))
+
+                  ], child: HomeScreen(uid: state.uid,)),
               ),
             );
           } else if (state is AuthFailure) {

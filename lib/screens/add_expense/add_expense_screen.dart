@@ -12,8 +12,8 @@ import 'package:uuid/uuid.dart';
 import 'bloc/create_expensebloc/create_expense_bloc.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  final String email;
-  const AddExpenseScreen({super.key, required this.email});
+  final String uid;
+  const AddExpenseScreen({super.key, required this.uid});
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();
@@ -33,7 +33,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     dateController.text = DateFormat('EEE, d/ M/ y').format(DateTime.now());
     expense = Expense.empty;
     expense.expenseId = const Uuid().v1();
-    print("email:${widget.email}");
+    print("email:${widget.uid}");
   }
 
   @override
@@ -106,7 +106,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               size: 16, color: Colors.grey),
                           onPressed: () async {
                             final newCategory =
-                            await getCategoryCreation(context);
+                            await getCategoryCreation(context,widget.uid);
                             if (state is GetCategorySuccess) {
                               setState(() {
                                 state.categories.insert(0, newCategory);
@@ -211,7 +211,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           });
                           context
                               .read<CreateExpenseBloc>()
-                              .add(CreateExpenseEvent(expense,widget.email));
+                              .add(CreateExpenseEvent(expense,widget.uid));
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.black,

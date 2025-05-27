@@ -2,8 +2,9 @@ part of 'create_category_bloc.dart';
 
 class CreateCategoryEvent extends Equatable {
   final Category category;
+  final String uid;
 
-  const CreateCategoryEvent(this.category);
+  const CreateCategoryEvent(this.category,this.uid);
 
   @override
   List<Object> get props => [category];

@@ -14,7 +14,8 @@ import '../../add_expense/bloc/create_expensebloc/create_expense_bloc.dart';
 import '../../add_expense/bloc/get_categorybloc/get_category_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String uid;
+  const HomeScreen({super.key, required this.uid});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
-  String email = "";
+  String uid = '';
 
   void onTabTapped(int newIndex) {
     setState(() {
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
 
         if (state is UserLoaded) {
-          email = state.user.email;
+            uid = state.user.uid;
         }
         return Scaffold(
             body: index == 0 ? MainScreen() : const StatScreen(),
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           BlocProvider(
                               create: (context) =>
                               GetCategoryBloc(FirebaseExpenseRepo())
-                                ..add(GetCategories())
+                                ..add(GetCategories(uid))
                           ),
                           BlocProvider(
                               create: (context) =>
@@ -68,12 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                         ],
-                        child: AddExpenseScreen(email: email,),
+                        child: AddExpenseScreen(uid: uid),
                       ),
                 ),
               ).then((added) {
                 if (added == true && context.mounted) {
-                  BlocProvider.of<GetExpenseBloc>(context).add(GetExpense());
+                  BlocProvider.of<GetExpenseBloc>(context).add(GetExpense(uid));
                 }
               });
             },)
