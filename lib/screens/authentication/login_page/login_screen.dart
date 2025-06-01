@@ -27,6 +27,7 @@ class LoginScreen extends StatelessWidget {
     final authRepository = AuthRepositoryImpl(dataSource: dataSource);
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
+    final googleSignInUseCase = SignInWithGoogleUseCase(authRepository);
     return Scaffold(
 
       backgroundColor: Colors.grey[100],
@@ -153,6 +154,7 @@ class LoginScreen extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () {
                           // Add Google sign-in logic
+                          context.read<AuthBloc>().add(GoogleSignInRequested());
                         },
                         icon: const FaIcon(FontAwesomeIcons.google, size: 16),
                         label: const Text("Continue with Google"),
@@ -178,7 +180,8 @@ class LoginScreen extends StatelessWidget {
                             // Navigate to Register Screen
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => BlocProvider(
-                                  create: (context) =>AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase)
+                                  create: (context) =>AuthBloc(signInUseCase: signInUseCase
+                                      ,signUpUseCase: signUpUseCase, signInWithGoogleUseCase: googleSignInUseCase)
                                   ,child: RegisterScreen(),)));
                           },
                           child: const Text(

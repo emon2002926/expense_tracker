@@ -18,4 +18,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Stream<UserEntity?> get userStream => dataSource.userStream;
+
+  @override
+  Future<UserEntity?> singInWithGoogle() => dataSource.singInWithGoogle();
+
 }

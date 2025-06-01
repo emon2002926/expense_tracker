@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
     final authRepository = AuthRepositoryImpl(dataSource: dataSource);
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
+    final googleSignInUseCase = SignInWithGoogleUseCase(authRepository);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) => AuthBloc(
-          signInUseCase: signInUseCase,
-          signUpUseCase: signUpUseCase,
+          signInUseCase: signInUseCase
+            ,signUpUseCase: signUpUseCase, signInWithGoogleUseCase: googleSignInUseCase
         ),
         child: const SplashScreenPage(), // Use SplashScreenPage here
       ),

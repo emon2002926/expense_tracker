@@ -21,6 +21,7 @@ class RegisterScreen extends StatelessWidget {
     final authRepository = AuthRepositoryImpl(dataSource: dataSource);
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
+    final googleSignInUseCase = SignInWithGoogleUseCase(authRepository);
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -28,7 +29,8 @@ class RegisterScreen extends StatelessWidget {
           if (state is AuthSuccess) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => BlocProvider(
-                  create: (context) =>AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase)
+                  create: (context) =>AuthBloc(signInUseCase: signInUseCase
+                      ,signUpUseCase: signUpUseCase, signInWithGoogleUseCase: googleSignInUseCase)
                   ,child: LoginScreen(),)));
 
           } else if (state is AuthFailure) {

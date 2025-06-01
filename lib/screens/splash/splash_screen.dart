@@ -1,4 +1,3 @@
-// import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
 import 'package:expense_tracker/screens/home/bloc/user_profile/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +36,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     final authRepository = AuthRepositoryImpl(dataSource: dataSource);
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
+    final googleSignInUseCase = SignInWithGoogleUseCase(authRepository);
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -66,7 +66,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             MaterialPageRoute(
               builder: (_) => BlocProvider(
                 create: (context) =>
-                AuthBloc(signInUseCase: signInUseCase, signUpUseCase: signUpUseCase)
+                AuthBloc(signInUseCase: signInUseCase
+                    ,signUpUseCase: signUpUseCase, signInWithGoogleUseCase: googleSignInUseCase)
                   ..add(AppStarted()),
                 child:  LoginScreen(),
               ),

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
@@ -5,4 +7,6 @@ abstract class AuthRepository {
   Future<UserEntity?> signUp(String email, String password,String username);
   Future<void> signOut();
   Stream<UserEntity?> get userStream;
+  Future<UserEntity?>singInWithGoogle();
+
 }

@@ -4,12 +4,41 @@ import 'package:expense_repositories/src/repository/auth/domain/usecases/sign_up
 import 'package:expense_repositories/src/repository/auth/domain/usecases/sign_in_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
+import 'package:expense_repositories/src/repository/auth/auth_repository.dart';
+
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignInUseCase signInUseCase;
   final SignUpUseCase signUpUseCase;
+  final SignInWithGoogleUseCase signInWithGoogleUseCase;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  AuthBloc({required this.signInUseCase, required this.signUpUseCase}) : super(AuthInitial()) {
+  AuthBloc({required this.signInUseCase, required this.signUpUseCase
+    ,required this.signInWithGoogleUseCase}) : super(AuthInitial()) {
+
+
+    on<GoogleSignInRequested>((event,emit)async{
+      emit(AuthLoading());
+      try{
+        final user = await signInWithGoogleUseCase();
+
+        user !=null
+            ?emit(AuthSuccess(user.uid, user.email))
+            :emit(AuthFailure("Google Sign-In error"));
+
+        //
+        // if(user != null){
+        //   emit(AuthSuccess(user.uid,user.email));
+        //   return;
+        // }else{
+        //   emit(AuthFailure("Google Sign-In error"));
+        //
+        // }
+
+      }catch(e){
+        emit(AuthFailure(e.toString()));
+      }
+    });
+
 
     on<AppStarted>((event,emit){
       final user = _firebaseAuth.currentUser;
