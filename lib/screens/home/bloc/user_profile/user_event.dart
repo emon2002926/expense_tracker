@@ -6,6 +6,10 @@ sealed class UserEvent {
 }
 
 class GetUser extends UserEvent {
-  final String? email;
-  GetUser( this.email);
+  final String? uid;
+  GetUser( this.uid);
+}
+class UpdateUser extends UserEvent {
+  final UserProfile userProfile;
+  UpdateUser(this.userProfile);
 }

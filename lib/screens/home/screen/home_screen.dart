@@ -12,9 +12,13 @@ import '../../add_expense/add_expense_screen.dart';
 import '../../add_expense/bloc/create_categorybloc/create_category_bloc.dart';
 import '../../add_expense/bloc/create_expensebloc/create_expense_bloc.dart';
 import '../../add_expense/bloc/get_categorybloc/get_category_bloc.dart';
+import 'package:expense_repositories/src/repository/user_finance/finance_repo.dart';
+
+import '../bloc/user_finance/user_finance_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   final String uid;
+
   const HomeScreen({super.key, required this.uid});
 
   @override
@@ -30,20 +34,24 @@ class _HomeScreenState extends State<HomeScreen> {
       index = newIndex;
     });
   }
-@override
+
+  @override
   void initState() {
-  super.initState();
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-
         if (state is UserLoaded) {
-            uid = state.user.uid;
+          uid = state.user.uid;
+
+          context.read<UserFinanceBloc>().add(LoadUserFinance(uid));
         }
         return Scaffold(
-            body: index == 0 ? MainScreen() : const StatScreen(),
+            body: index == 0 ? MainScreen(uid: uid,)
+              : const StatScreen(),
             bottomNavigationBar: BottomNavigation(
                 currentIndex: index, onTabSelected: onTabTapped),
             floatingActionButtonLocation: FloatingActionButtonLocation

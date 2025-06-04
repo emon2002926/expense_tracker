@@ -2,6 +2,7 @@ import 'package:expense_repositories/src/repository/expense/expense_repository.d
 import 'package:expense_tracker/screens/authentication/bloc/auth_bloc.dart';
 import 'package:expense_tracker/screens/authentication/bloc/auth_state.dart';
 import 'package:expense_tracker/screens/authentication/bloc/auth_event.dart';
+import 'package:expense_tracker/screens/home/bloc/user_finance/user_finance_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,6 +15,8 @@ import '../bloc/auth_event.dart';
 import '../registration_page/register_screen.dart';
 import 'package:expense_repositories/src/repository/auth/auth_repository.dart' ;
 import 'package:expense_repositories/src/repository/user_profile/user_profile_repository.dart';
+import 'package:expense_repositories/src/repository/user_finance/finance_repo.dart' ;
+
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -28,14 +31,31 @@ class LoginScreen extends StatelessWidget {
     final signInUseCase = SignInUseCase(authRepository);
     final signUpUseCase = SignUpUseCase(authRepository);
     final googleSignInUseCase = SignInWithGoogleUseCase(authRepository);
+
+    final financeDataSource = UserFinanceRepositoryImpl(UserFinanceRemoteDataSource());
+    final getUserFinance = GetUserFinance(financeDataSource);
+    final updateUserFinance = UpdateUserFinance(financeDataSource);
+    final createUserFinanceUsecase = CreateUserFinanceUsecase(financeDataSource);
+
     return Scaffold(
 
       backgroundColor: Colors.grey[100],
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
 
+
           if (state is AuthSuccess) {
-            print("Uuidhs  :"+state.uid);
+            final initialFinance = UserFinanceEntity(
+              uid: state.uid,
+              totalBalance: 0,
+              income: 0,
+              expense: 0,
+            );
+
+            context.read<UserFinanceBloc>().add(
+              CreateUserFinance(state.uid, initialFinance),
+            );
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) =>
@@ -44,7 +64,22 @@ class LoginScreen extends StatelessWidget {
                       create: (_) =>
                       GetExpenseBloc(FirebaseExpenseRepo())..add(GetExpense(state.uid)),
                     ),
-                    BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.uid)))
+                    BlocProvider(create: (_)=> UserBloc(UserRepositoryImpl())..add(GetUser(state.uid))),
+                    BlocProvider(
+                      create: (_) => UserFinanceBloc(
+                        getUserFinance: getUserFinance,
+                        updateUserFinance: updateUserFinance,
+                        createUserFinanceUsecase: createUserFinanceUsecase,
+                      )..add(CreateUserFinance(
+                        state.uid,
+                        UserFinanceEntity(
+                          uid: state.uid,
+                          totalBalance: 0,
+                          income: 0,
+                          expense: 0,
+                        ),
+                      )),
+                    ),
 
                   ], child: HomeScreen(uid: state.uid,)),
               ),

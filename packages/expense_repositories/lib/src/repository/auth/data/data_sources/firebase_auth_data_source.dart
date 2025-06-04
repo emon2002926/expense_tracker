@@ -32,6 +32,12 @@ class FirebaseAuthDataSource {
           'username': user.displayName ?? '',
           'createdAt': FieldValue.serverTimestamp(),
         });
+
+        // await FirebaseFirestore.instance.collection("users").doc(uid).collection("finance").doc(uid).set({
+        //   'totalBalance': 0,
+        //   'income': 0,
+        //   'expense': 0,
+        // });
       }
 
       return UserModel.fromFirebaseUser(user);
