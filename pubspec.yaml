@@ -27,17 +27,22 @@ dependencies:
   firebase_auth: ^5.5.2
   lottie: ^3.3.1
   google_sign_in: ^6.2.1
+  flutter_launcher_icons: ^0.13.1 # ✅ add this line
 
-
-
-
-
-  # Add local package dependency
   expense_repositories:
     path: ./packages/expense_repositories
 
 
 
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/app_logo.png"
+
+
+
+  # Add local package dependency
 
 dev_dependencies:
   flutter_test:
